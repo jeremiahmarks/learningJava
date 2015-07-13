@@ -1,8 +1,8 @@
-/* 
+/*
 * @Author: Jeremiah Marks
 * @Date:   2015-07-12 15:58:13
 * @Last Modified 2015-07-12
-* @Last Modified time: 2015-07-12 17:59:27
+* @Last Modified time: 2015-07-12 18:43:41
 */
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.apache.xmlrpc.client.XmlRpcClient;
@@ -17,197 +17,167 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-List Company = new ArrayList(1000);
-List Contact = new ArrayList(1000);
 
-Company.add("AccountId");
-Company.add("Address1Type");
-Company.add("Address2Street1");
-Company.add("Address2Street2");
-Company.add("Address2Type");
-Company.add("Address3Street1");
-Company.add("Address3Street2");
-Company.add("Address3Type");
-Company.add("Anniversary");
-Company.add("AssistantName");
-Company.add("AssistantPhone");
-Company.add("BillingInformation");
-Company.add("Birthday");
-Company.add("City");
-Company.add("City2");
-Company.add("City3");
-Company.add("Company");
-Company.add("CompanyID");
-Company.add("ContactNotes");
-Company.add("ContactType");
-Company.add("Country");
-Company.add("Country2");
-Company.add("Country3");
-Company.add("CreatedBy");
-Company.add("DateCreated");
-Company.add("Email");
-Company.add("EmailAddress2");
-Company.add("EmailAddress3");
-Company.add("Fax1");
-Company.add("Fax1Type");
-Company.add("Fax2");
-Company.add("Fax2Type");
-Company.add("FirstName");
-Company.add("Groups");
-Company.add("Id");
-Company.add("JobTitle");
-Company.add("LastName");
-Company.add("LastUpdated");
-Company.add("LastUpdatedBy");
-Company.add("MiddleName");
-Company.add("Nickname");
-Company.add("OwnerID");
-Company.add("Password");
-Company.add("Phone1");
-Company.add("Phone1Ext");
-Company.add("Phone1Type");
-Company.add("Phone2");
-Company.add("Phone2Ext");
-Company.add("Phone2Type");
-Company.add("Phone3");
-Company.add("Phone3Ext");
-Company.add("Phone3Type");
-Company.add("Phone4");
-Company.add("Phone4Ext");
-Company.add("Phone4Type");
-Company.add("Phone5");
-Company.add("Phone5Ext");
-Company.add("Phone5Type");
-Company.add("PostalCode");
-Company.add("PostalCode2");
-Company.add("PostalCode3");
-Company.add("ReferralCode");
-Company.add("SpouseName");
-Company.add("State");
-Company.add("State2");
-Company.add("State3");
-Company.add("StreetAddress1");
-Company.add("StreetAddress2");
-Company.add("Suffix");
-Company.add("Title");
-Company.add("Username");
-Company.add("Validated");
-Company.add("Website");
-Company.add("ZipFour1");
-Company.add("ZipFour2");
-Company.add("ZipFour3");
-
-Contact.add("AccountId");
-Contact.add("Address1Type");
-Contact.add("Address2Street1");
-Contact.add("Address2Street2");
-Contact.add("Address2Type");
-Contact.add("Address3Street1");
-Contact.add("Address3Street2");
-Contact.add("Address3Type");
-Contact.add("Anniversary");
-Contact.add("AssistantName");
-Contact.add("AssistantPhone");
-Contact.add("BillingInformation");
-Contact.add("Birthday");
-Contact.add("City");
-Contact.add("City2");
-Contact.add("City3");
-Contact.add("Company");
-Contact.add("CompanyID");
-Contact.add("ContactNotes");
-Contact.add("ContactType");
-Contact.add("Country");
-Contact.add("Country2");
-Contact.add("Country3");
-Contact.add("CreatedBy");
-Contact.add("DateCreated");
-Contact.add("Email");
-Contact.add("EmailAddress2");
-Contact.add("EmailAddress3");
-Contact.add("Fax1");
-Contact.add("Fax1Type");
-Contact.add("Fax2");
-Contact.add("Fax2Type");
-Contact.add("FirstName");
-Contact.add("Groups");
-Contact.add("Id");
-Contact.add("JobTitle");
-Contact.add("LastName");
-Contact.add("LastUpdated");
-Contact.add("LastUpdatedBy");
-Contact.add("LeadSourceId");
-Contact.add("Leadsource");
-Contact.add("MiddleName");
-Contact.add("Nickname");
-Contact.add("OwnerID");
-Contact.add("Password");
-Contact.add("Phone1");
-Contact.add("Phone1Ext");
-Contact.add("Phone1Type");
-Contact.add("Phone2");
-Contact.add("Phone2Ext");
-Contact.add("Phone2Type");
-Contact.add("Phone3");
-Contact.add("Phone3Ext");
-Contact.add("Phone3Type");
-Contact.add("Phone4");
-Contact.add("Phone4Ext");
-Contact.add("Phone4Type");
-Contact.add("Phone5");
-Contact.add("Phone5Ext");
-Contact.add("Phone5Type");
-Contact.add("PostalCode");
-Contact.add("PostalCode2");
-Contact.add("PostalCode3");
-Contact.add("ReferralCode");
-Contact.add("SpouseName");
-Contact.add("State");
-Contact.add("State2");
-Contact.add("State3");
-Contact.add("StreetAddress1");
-Contact.add("StreetAddress2");
-Contact.add("Suffix");
-Contact.add("Title");
-Contact.add("Username");
-Contact.add("Validated");
-Contact.add("Website");
-Contact.add("ZipFour1");
-Contact.add("ZipFour2");
-Contact.add("ZipFour3"]);
-
-Map tablesAndCols = new HashMap();
-tablesAndCols.put("Contact", Contact);
-tablesAndCols.put("Company", Company);
-
-
-public class JavaClient {
+public class ISClient {
     private String appname;
     private String apikey;
-    private String serverAddress;
+    private URL serverAddress;
     private XmlRpcClient connection;
     private XmlRpcClientConfigImpl config;
+    private List contact;
+    private List dataToPass;
 
-    public JavaClient(String appname, String apikey){
+    public ISClient(String appname, String apikey) throws MalformedURLException, XmlRpcException {
         this.appname = appname;
         this.apikey = apikey;
-        this.serverAddress = "https://" + this.appname + ".infusionsoft.com:443/api/xmlrpc";
+        this.serverAddress = new URL("https://" + this.appname + ".infusionsoft.com:443/api/xmlrpc");
         this.config = new XmlRpcClientConfigImpl();
-        this.config.setServerURL(new URL(this.serverAddress));
-        this.connection = new XmlRpcClient()
-        this.connection.setConfig(config)
+        this.config.setServerURL(this.serverAddress);
+        this.connection = new XmlRpcClient();
+        this.connection.setConfig(config);
+        this.contact = new ArrayList();
+        this.contact.add("AccountId");
+        this.contact.add("Address1Type");
+        this.contact.add("Address2Street1");
+        this.contact.add("Address2Street2");
+        this.contact.add("Address2Type");
+        this.contact.add("Address3Street1");
+        this.contact.add("Address3Street2");
+        this.contact.add("Address3Type");
+        this.contact.add("Anniversary");
+        this.contact.add("AssistantName");
+        this.contact.add("AssistantPhone");
+        this.contact.add("BillingInformation");
+        this.contact.add("Birthday");
+        this.contact.add("City");
+        this.contact.add("City2");
+        this.contact.add("City3");
+        this.contact.add("Company");
+        this.contact.add("CompanyID");
+        this.contact.add("ContactNotes");
+        this.contact.add("ContactType");
+        this.contact.add("Country");
+        this.contact.add("Country2");
+        this.contact.add("Country3");
+        this.contact.add("CreatedBy");
+        this.contact.add("DateCreated");
+        this.contact.add("Email");
+        this.contact.add("EmailAddress2");
+        this.contact.add("EmailAddress3");
+        this.contact.add("Fax1");
+        this.contact.add("Fax1Type");
+        this.contact.add("Fax2");
+        this.contact.add("Fax2Type");
+        this.contact.add("FirstName");
+        this.contact.add("Groups");
+        this.contact.add("Id");
+        this.contact.add("JobTitle");
+        this.contact.add("LastName");
+        this.contact.add("LastUpdated");
+        this.contact.add("LastUpdatedBy");
+        this.contact.add("LeadSourceId");
+        this.contact.add("Leadsource");
+        this.contact.add("MiddleName");
+        this.contact.add("Nickname");
+        this.contact.add("OwnerID");
+        this.contact.add("Password");
+        this.contact.add("Phone1");
+        this.contact.add("Phone1Ext");
+        this.contact.add("Phone1Type");
+        this.contact.add("Phone2");
+        this.contact.add("Phone2Ext");
+        this.contact.add("Phone2Type");
+        this.contact.add("Phone3");
+        this.contact.add("Phone3Ext");
+        this.contact.add("Phone3Type");
+        this.contact.add("Phone4");
+        this.contact.add("Phone4Ext");
+        this.contact.add("Phone4Type");
+        this.contact.add("Phone5");
+        this.contact.add("Phone5Ext");
+        this.contact.add("Phone5Type");
+        this.contact.add("PostalCode");
+        this.contact.add("PostalCode2");
+        this.contact.add("PostalCode3");
+        this.contact.add("ReferralCode");
+        this.contact.add("SpouseName");
+        this.contact.add("State");
+        this.contact.add("State2");
+        this.contact.add("State3");
+        this.contact.add("StreetAddress1");
+        this.contact.add("StreetAddress2");
+        this.contact.add("Suffix");
+        this.contact.add("Title");
+        this.contact.add("Username");
+        this.contact.add("Validated");
+        this.contact.add("Website");
+        this.contact.add("ZipFour1");
+        this.contact.add("ZipFour2");
+        this.contact.add("ZipFour3");
     }
 
-    public void getAllContacts() {
-        dataToPass = new ArrayList();
-        dataToPass.add(this.apikey); //Secure key
-        dataToPass.add("Contact");  //What table we are looking in
-        dataToPass.add(new Integer(50)); //How many records to return
-        dataToPass.add(new Integer(0)); //Which page of results to display
-        dataToPass.add("GroupId"); //The field we are querying on
-        dataToPass.add(new Integer(groupId)); //THe data to query on
-        paramete
-    }
+    public void printFirstContacts() {
 
-   public
+        Map searchData = new HashMap();
+        searchData.put("FirstName", "%");
+        this.dataToPass = new ArrayList();
+        this.dataToPass.add(this.apikey); //Secure key
+        this.dataToPass.add("Contact");  //What table we are looking in
+        this.dataToPass.add(new Integer(1000)); //How many records to return
+        this.dataToPass.add(new Integer(0)); //Which page of results to display
+        this.dataToPass.add(searchData);
+        this.dataToPass.add(this.contact); //what fields to select on return
+        this.dataToPass.add("Id"); //The field we are querying on
+        this.dataToPass.add(true); //THe data to query on
+
+        //Make call - the result is an array of structs
+
+        try {
+          Object[] contacts = (Object[]) this.connection.execute("DataService.query", this.dataToPass);
+          //Loop through results
+          for (int i = 0; i < contacts.length; i++) {
+              //Each item in the array is a struct
+              Map contact = (Map) contacts[i];
+              System.out.println("Contact with email address " + contact.get("Email") + " was found and has ID " +
+                      contact.get("Id"));
+          }
+        } catch (XmlRpcException e) {
+            System.err.println("XmlRpcException Ya broke it" + e.getMessage());
+        }
+    }
+    public ArrayList<Map> getAllContacts(){
+      Map searchData = new HashMap();
+      Object[] results = new Object[0];
+      searchData.put("Id", "%");
+      Integer page=0;
+      ArrayList<Map> totalContacts = new ArrayList<Map>();
+      try {
+        do {
+          dataToPass = new ArrayList();
+          dataToPass.add(this.apikey); //Secure key
+          dataToPass.add("Contact");  //What table we are looking in
+          dataToPass.add(new Integer(1000)); //How many records to return
+          dataToPass.add(page); //Which page of results to display
+          dataToPass.add(searchData);
+          dataToPass.add(this.contact); //what fields to select on return
+          dataToPass.add("Id"); //The field we are querying on
+          dataToPass.add(true); //THe data to
+
+          results =  (Object[]) this.connection.execute("DataService.query", this.dataToPass);
+          //Loop through results
+          for (int i = 0; i < results.length; i++) {
+              //Each item in the array is a struct
+              Map contact = (Map) results[i];
+              totalContacts.add(contact);
+          }
+          page++;
+        } while (results.length==1000);
+      } catch (XmlRpcException e) {
+          System.err.println("XmlRpcException Ya broke it" + e.getMessage());
+      }
+      return totalContacts;
+    }
+    public Integer createWithDupCheck(Map contactDetails){
+
+    }
 }
