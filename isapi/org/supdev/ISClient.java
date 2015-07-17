@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.csv.*;
 
 
-
-public class ISClient {
+public class ISClient implements Imports{
     private String appname;
     private String apikey;
     private URL serverAddress;
@@ -179,6 +179,21 @@ public class ISClient {
           System.err.println("XmlRpcException Ya broke it" + e.getMessage());
       }
       return totalContacts;
+    }
+    public Integer createContact(Map contactData){
+      return 0;
+    }
+    public ArrayList<Map> getContactsAndFK(){
+      ArrayList<Map> returnVals = new ArrayList<Map>();
+      return returnVals;
+    }
+    public ArrayList<Map> getCSVData(String pathToCSV){
+      ArrayList<Map> returnVals = new ArrayList<Map>();
+      return returnVals;
+    }
+    public void saveCSVData(ArrayList<Map> datum){
+      String something = new String("pass");
+      
     }
     // public Integer createWithDupCheck(Map contactDetails){
     //
