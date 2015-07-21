@@ -11,6 +11,9 @@ import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.*;
+
+import org.apache.commons.csv.*;
+
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.Vector;
@@ -18,7 +21,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.csv.*;
 
 
 public class ISClient implements Imports{
@@ -148,6 +150,7 @@ public class ISClient implements Imports{
             System.err.println("XmlRpcException Ya broke it" + e.getMessage());
         }
     }
+
     public ArrayList<Map> getAllContacts(){
       Map searchData = new HashMap();
       Object[] results = new Object[0];
@@ -180,21 +183,29 @@ public class ISClient implements Imports{
       }
       return totalContacts;
     }
+
     public Integer createContact(Map contactData){
       return 0;
     }
+
     public ArrayList<Map> getContactsAndFK(){
       ArrayList<Map> returnVals = new ArrayList<Map>();
       return returnVals;
     }
+
     public ArrayList<Map> getCSVData(String pathToCSV){
-      ArrayList<Map> returnVals = new ArrayList<Map>();
-      return returnVals;
+      System.out.println("This is ISClient");
+      System.out.println(pathToCSV);
+      Reader infile = new FileReader(pathToCSV);
+      Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(infile);
+      return records;
     }
+
     public void saveCSVData(ArrayList<Map> datum){
       String something = new String("pass");
 
     }
+
     // public Integer createWithDupCheck(Map contactDetails){
     //
     // }
